@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Solicitudes de proveedores</h1>
+
+    <ul style="list-style-type: none;">
+    {% for proveedor in proveedores %}
+        <li>
+            <a href="{% url 'proveedor_detail' proveedor.id %}"><h1>{{proveedor.nombre_comercial}}</h1></a>
+            <p>Para: {{proveedor.empresa}}</p>
+            <p>Solicitante: {{proveedor.usuario}}</p>
+            {% if proveedor.compras %}
+                <p>✅ Compras</p>
+            {% else %}
+                <p>🕐 Compras</p>
+            {% endif %}
+            {% if proveedor.finanzas %}
+                <p>✅ Finanzas</p>
+            {% else %}
+                <p>🕐 Finanzas</p>
+            {% endif %}
+            {% if proveedor.sistemas %}
+                <p>✅ Sistemas</p>
+            {% else %}
+                <p>🕐 Sistemas</p>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

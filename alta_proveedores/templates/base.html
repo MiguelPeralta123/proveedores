@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proveedores</title>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <!-- Si el usuario está autenticado, mostramos las siguientes opciones -->
+            {% if user.is_authenticated %}
+            <li>
+                <a href="/">Inicio</a>
+            </li>
+            <li>
+                <a href="/proveedores">Proveedores</a>
+            </li>
+            <li>
+                <a href="/proveedores/crear">Registrar proveedor</a>
+            </li>
+            <li>
+                <a href="/signout">Cerrar sesión</a>
+            </li>
+            <!-- Si no, solo mostramos las opciones "Iniciar sesión" y "Crear cuenta" -->
+            {% else %}
+            <li>
+                <a href="/signin">Iniciar sesión</a>
+            </li>
+            <li>
+                <a href="/signup">Crear cuenta</a>
+            </li>
+            {% endif %}
+            
+        </ul>
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>
