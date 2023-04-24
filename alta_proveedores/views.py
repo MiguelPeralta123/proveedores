@@ -6,11 +6,15 @@ from django.http import HttpResponse
 from django.db import IntegrityError
 from .forms import ProveedorForm
 from .models import Proveedor
+# Decorator to protect routes from accessing before sign in
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
 # VISTA DE INICIO
 
+# Using the decorator to force login, the return route to login is defined in proveedores/settings.py
+@login_required
 def home(request):
     return render(request, 'home.html')
 
@@ -64,6 +68,7 @@ def signout(request):
 
 # VISTAS DE PROVEEDOR (GET ALL, CREATE, DETAIL)
 
+@login_required
 def proveedor(request):
     # Trayendo de la base de datos los proveedores que correspondan al usuario logueado
     proveedores = Proveedor.objects.filter(usuario = request.user)
@@ -71,6 +76,7 @@ def proveedor(request):
         'proveedores': proveedores
     })
 
+@login_required
 def proveedor_create(request):
     if request.method == 'GET':
         return render(request, 'proveedor/proveedor_create.html', {
@@ -89,6 +95,7 @@ def proveedor_create(request):
                 'error': 'Por favor ingrese datos válidos'
             })
 
+@login_required
 def proveedor_detail(request, proveedor_id):
     # Traemos el proveedor que tenga el id que seleccionamos
     proveedor = get_object_or_404(Proveedor, pk=proveedor_id, user=request.user)
