@@ -1,19 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Registro de usuarios</h1>
 
-{{error}}
+<main class="container py-5">
 
-<form method="POST">
+    <div class="row d-flex justify-content-center">
 
-    {% csrf_token %}
+        <div class="col-md-6 align-self-center mx-auto">
 
-    {{form.as_p}}
+            <form class="card card-body" method="POST">
 
-    <button>
-        Registrarse
-    </button>
+                <h1>Crear cuenta</h1>
+            
+                {{error}}
+            
+                {% csrf_token %}
+            
+                <div class="py-3">
+                    {{form.as_p}}
+                </div>
+            
+                <button class="btn btn-primary">
+                    Registrarse
+                </button>
+            
+            </form>
 
-</form>
+        </div>
+
+    </div>
+
+</main>
+
 {% endblock %}

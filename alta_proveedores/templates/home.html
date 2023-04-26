@@ -1,6 +1,39 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Home</h1>
-<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente voluptas magnam sed, molestiae eum error doloremque eveniet aspernatur libero facere, est dolore blanditiis repellendus praesentium, consequatur unde qui expedita. Beatae.</p>
+
+<main class="container py-5">
+
+    <section class="card card-body">
+
+        <h1 class="text-center display-5 py-3">Alta de proveedores, clientes y materiales</h1>
+
+        <p>Seleccione una de las siguientes opciones para ver sus solicitudes pendientes de aprobar.</p>
+
+        <div class="text-center py-3">
+            
+            <a class="btn btn-primary" href="proveedores">Proveedores</a>
+            
+            <a class="btn btn-primary" href="">Clientes</a>
+            
+            <a class="btn btn-primary" href="">Materiales</a>
+
+        </div>
+
+        <p>Seleccione una de las siguientes opciones para solicitar un alta de proveedor, cliente o material.</p>
+
+        <div class="text-center">
+            
+            <a class="btn btn-primary" href="proveedores/crear">Proveedores</a>
+            
+            <a class="btn btn-primary" href="">Clientes</a>
+            
+            <a class="btn btn-primary" href="">Materiales</a>
+
+        </div>
+
+    </section>
+
+</main>
+
 {% endblock %}

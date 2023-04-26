@@ -2,18 +2,34 @@
 
 {% block content %}
 
-<h1>Sign in</h1>
+<main class="container py-5">
 
-{{error}}
+    <div class="row d-flex justify-content-center">
 
-<form method="POST">
-    {% csrf_token %}
+        <div class="col-md-6 align-self-center mx-auto">
 
-    {{form.as_p}}
+            <form class="card card-body" method="POST">
 
-    <button>
-        Iniciar sesión
-    </button>
-</form>
+                <h1>Inicio de sesión</h1>
+            
+                {{error}}
+            
+                {% csrf_token %}
+
+                <div class="py-3">
+                    {{form.as_p}}
+                </div>
+            
+                <button class="btn btn-primary">
+                    Iniciar sesión
+                </button>
+            
+            </form>
+
+        </div>
+
+    </div>
+
+</main>
 
 {% endblock %}

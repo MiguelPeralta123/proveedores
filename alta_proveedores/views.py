@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse
 from django.db import IntegrityError
-from .forms import ProveedorForm
+from .forms import ProveedorForm, ProveedorFormForStaff, ProveedorDetailForm
 from .models import Proveedor
 # Decorator to protect routes from accessing before sign in
 from django.contrib.auth.decorators import login_required
@@ -84,7 +84,7 @@ def proveedor_create(request):
         })
     else:
         try:
-            form = ProveedorForm(request.POST)
+            form = ProveedorForm(request.POST, request.FILES)
             new_proveedor = form.save(commit=False)
             new_proveedor.usuario = request.user
             new_proveedor.save()
@@ -98,21 +98,25 @@ def proveedor_create(request):
 @login_required
 def proveedor_detail(request, proveedor_id):
     # Traemos el proveedor que tenga el id que seleccionamos
-    proveedor = get_object_or_404(Proveedor, pk=proveedor_id, user=request.user)
+    proveedor = get_object_or_404(Proveedor, pk=proveedor_id, usuario=request.user)
     if request.method == 'GET':
         # Creamos un formulario con los datos del proveedor precargados
-        form = ProveedorForm(instance=proveedor)
+        # Validamos si el usuario es staff para mostrar la información completa
+        if request.user.is_staff:
+            form = ProveedorFormForStaff(instance=proveedor)
+        else:
+            form = ProveedorDetailForm(instance=proveedor)
         return render(request, 'proveedor/proveedor_detail.html', {
             'proveedor': proveedor,
             'form': form
         })
     else:
         try:
-            form = ProveedorForm(request.POST, instance=proveedor)
+            form = ProveedorDetailForm(request.POST, instance=proveedor)
             form.save()
             return redirect('proveedor')
         except ValueError:
-            form = ProveedorForm(instance=proveedor)
+            form = ProveedorDetailForm(instance=proveedor)
             return render(request, 'proveedor/proveedor_detail.html', {
                 'proveedor': proveedor,
                 'form': form,
