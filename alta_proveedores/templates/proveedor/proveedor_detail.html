@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<main class="container py-5">
+<main class="container py-5 mt-5">
     <div class="row d-flex justify-content-center">
         <div class="col-md-6 align-self-center mx-auto">
             <form class="card card-body" method="POST">
@@ -15,10 +15,8 @@
 
                 {{form.as_p}}
 
-                <a href="/{{proveedor.constancia_situacion_fiscal}}" target="_blank"
-                    style="display: block;margin: 10px 0;">Descargar constancia de situación fiscal</a>
-                <a href="/{{proveedor.estado_cuenta_bancario}}" target="_blank"
-                    style="display: block;margin: 10px 0;">Descargar estado de cuenta bancario</a>
+                <a href="/{{proveedor.constancia_situacion_fiscal}}" class="d-block my-2" download="">Descargar constancia de situación fiscal</a>
+                <a href="/{{proveedor.estado_cuenta_bancario}}" class="d-block my-2" download="">Descargar estado de cuenta bancario</a>
 
                 <button class="btn btn-primary" style="margin: 10px 0;">
                     Actualizar
