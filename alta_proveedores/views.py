@@ -71,7 +71,7 @@ def signout(request):
 @login_required
 def proveedor(request):
     # Trayendo de la base de datos los proveedores que correspondan al usuario logueado
-    proveedores = Proveedor.objects.filter(usuario = request.user)
+    proveedores = Proveedor.objects.filter(usuario = request.user, tipo_alta = 'Proveedor')
     return render(request, 'proveedor/proveedor.html', {
         'proveedores': proveedores
     })

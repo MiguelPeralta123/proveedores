@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+# Creamos los endpoints para las vistas de proveedores
 from alta_proveedores import views
+# Creamos los endpoints para las vistas de materiales
+from alta_materiales import views as views_materiales
 
 urlpatterns = [
     # URL para admin
@@ -31,4 +34,8 @@ urlpatterns = [
     path('proveedores/', views.proveedor, name='proveedor'),
     path('proveedores/crear/', views.proveedor_create, name='proveedor_create'),
     path('proveedores/<int:proveedor_id>/', views.proveedor_detail, name='proveedor_detail'),
+    # URLs para solicitudes y materiales
+    path('materiales/', views_materiales.material, name='material'),
+    path('materiales/crear/', views_materiales.material_create, name='material'),
+    path('materiales/<int:material_id>/', views_materiales.material_detail, name='material_detail'),
 ]

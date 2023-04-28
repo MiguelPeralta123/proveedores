@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'alta_proveedores',
+    'alta_materiales',
 ]
 
 MIDDLEWARE = [
