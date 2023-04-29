@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'alta_proveedores',
     'alta_materiales',
+    'iniciar_sesion',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,5 @@ LOGIN_URL = '/signin'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'iniciar_sesion.CustomUser'

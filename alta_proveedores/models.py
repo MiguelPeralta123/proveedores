@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from django.conf import settings
+
 # Create your models here.
 class Proveedor(models.Model):
     empresa = models.CharField(max_length=50)
@@ -65,7 +67,7 @@ class Proveedor(models.Model):
     sistemas = models.BooleanField(default=False)
     aprobadas = models.BooleanField(default=False)
     fecha = models.DateTimeField(auto_now_add=True)
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     usar_en_portal_proveedores = models.BooleanField(default=False)
     no_aplica_para_rafaga = models.BooleanField(default=False)
     no_relacionar_OC = models.BooleanField(default=False)

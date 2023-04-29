@@ -16,24 +16,29 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+# Creando los endpoints para las vistas de inicio de sesión
+from iniciar_sesion import views as views_login
 # Creamos los endpoints para las vistas de proveedores
-from alta_proveedores import views
+from alta_proveedores import views as views_proveedores
 # Creamos los endpoints para las vistas de materiales
 from alta_materiales import views as views_materiales
 
 urlpatterns = [
     # URL para admin
     path('admin/', admin.site.urls),
+
     # URL para home
-    path('', views.home, name='home'),
-    # URLs para inicio de sesión (signup, login, logout)
-    path('signup/', views.signup, name='signup'),
-    path('signout/', views.signout, name='signout'),
-    path('signin/', views.signin, name='signin'),
+    path('', views_proveedores.home, name='home'),
+
+    # URLs para inicio de sesión (login, logout)
+    path('signin/', views_login.signin, name='signin'),
+    path('signout/', views_login.signout, name='signout'),
+
     # URLs para proveedores (get all, create, detail)
-    path('proveedores/', views.proveedor, name='proveedor'),
-    path('proveedores/crear/', views.proveedor_create, name='proveedor_create'),
-    path('proveedores/<int:proveedor_id>/', views.proveedor_detail, name='proveedor_detail'),
+    path('proveedores/', views_proveedores.proveedor, name='proveedor'),
+    path('proveedores/crear/', views_proveedores.proveedor_create, name='proveedor_create'),
+    path('proveedores/<int:proveedor_id>/', views_proveedores.proveedor_detail, name='proveedor_detail'),
+
     # URLs para solicitudes y materiales
     path('materiales/', views_materiales.material, name='material'),
     path('materiales/crear/', views_materiales.material_create, name='material'),

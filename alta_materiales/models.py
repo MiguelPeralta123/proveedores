@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from django.conf import settings
+
 # Create your models here.
 class Material(models.Model):
     empresa = models.CharField(max_length=50)
@@ -15,7 +17,7 @@ class Material(models.Model):
     sistemas = models.BooleanField(default=False)
     aprobadas = models.BooleanField(default=False)
     fecha = models.DateTimeField(auto_now_add=True)
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.id) + " - " + self.nombre_producto + " - " + self.usuario.username
