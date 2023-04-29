@@ -26,6 +26,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
+    puede_comprar = models.BooleanField(default=False)
     compras = models.BooleanField(default=False)
     finanzas = models.BooleanField(default=False)
     sistemas = models.BooleanField(default=False)
