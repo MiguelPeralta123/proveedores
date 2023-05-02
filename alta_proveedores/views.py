@@ -78,22 +78,26 @@ def proveedor(request):
 
 @login_required
 def proveedor_create(request):
-    if request.method == 'GET':
-        return render(request, 'proveedor/proveedor_create.html', {
-            'form': ProveedorForm
-        })
-    else:
-        try:
-            form = ProveedorForm(request.POST, request.FILES)
-            new_proveedor = form.save(commit=False)
-            new_proveedor.usuario = request.user
-            new_proveedor.save()
-            return redirect('proveedor')
-        except ValueError:
+    # Verificamos si el usuario tiene permisos para requerir, en caso contrario, lo redireccionamos a la ventana de proveedores
+    if request.user.puede_comprar:
+        if request.method == 'GET':
             return render(request, 'proveedor/proveedor_create.html', {
-                'form': ProveedorForm,
-                'error': 'Por favor ingrese datos válidos'
+                'form': ProveedorForm
             })
+        else:
+            try:
+                form = ProveedorForm(request.POST, request.FILES)
+                new_proveedor = form.save(commit=False)
+                new_proveedor.usuario = request.user
+                new_proveedor.save()
+                return redirect('proveedor')
+            except ValueError:
+                return render(request, 'proveedor/proveedor_create.html', {
+                    'form': ProveedorForm,
+                    'error': 'Por favor ingrese datos válidos'
+                })
+    else:
+        return redirect('proveedor')
 
 @login_required
 def proveedor_detail(request, proveedor_id):

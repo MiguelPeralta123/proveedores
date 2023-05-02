@@ -20,22 +20,26 @@ def material(request):
 
 @login_required
 def material_create(request):
-    if request.method == 'GET':
-        return render(request, 'material/material_create.html', {
-            'form': MaterialForm
-        })
-    else:
-        try:
-            form = MaterialForm(request.POST)
-            new_material = form.save(commit=False)
-            new_material.usuario = request.user
-            new_material.save()
-            return redirect('material')
-        except ValueError:
+    # Verificamos si el usuario tiene permisos para requerir, en caso contrario, lo redireccionamos a la ventana de materiales
+    if request.user.puede_comprar:
+        if request.method == 'GET':
             return render(request, 'material/material_create.html', {
-                'form': MaterialForm,
-                'error': 'Por favor ingrese datos válidos'
+                'form': MaterialForm
             })
+        else:
+            try:
+                form = MaterialForm(request.POST)
+                new_material = form.save(commit=False)
+                new_material.usuario = request.user
+                new_material.save()
+                return redirect('material')
+            except ValueError:
+                return render(request, 'material/material_create.html', {
+                    'form': MaterialForm,
+                    'error': 'Por favor ingrese datos válidos'
+                })
+    else:
+        return redirect('material')
 
 @login_required
 def material_detail(request, material_id):
