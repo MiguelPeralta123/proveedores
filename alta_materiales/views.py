@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.db import IntegrityError
-from .forms import MaterialForm, MaterialFormForStaff, MaterialDetailForm
+from .forms import MaterialForm, MaterialFormForCompras, MaterialFormForFinanzas, MaterialFormForSistemas, MaterialDetailForm
 from .models import Material
 # Decorator to protect routes from accessing before sign in
 from django.contrib.auth.decorators import login_required
@@ -12,8 +12,21 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def material(request):
-    # Trayendo de la base de datos los materiales que correspondan al usuario logueado
-    materiales = Material.objects.filter(usuario = request.user)
+    # Si el usuario tiene permisos de compras, podrá ver las solicitudes de todos los usuarios
+    if request.user.compras:
+        # Trayendo de la base de datos todas las solicitudes que no hayan sido aprobadas por compras
+        materiales = Material.objects.filter(compras = False)
+    else:
+        if request.user.finanzas:
+            # Trayendo de la base de datos todas las solicitudes que no hayan sido aprobadas por finanzas
+            materiales = Material.objects.filter(compras = True, finanzas = False)
+        else:
+            if request.user.sistemas:
+                # Trayendo de la base de datos todas las solicitudes que no hayan sido aprobadas por sistemas
+                materiales = Material.objects.filter(compras = True, finanzas = True, sistemas = False)
+            else:
+                # Trayendo de la base de datos los materiales que correspondan al usuario logueado
+                materiales = Material.objects.filter(usuario = request.user)
     return render(request, 'material/material.html', {
         'materiales': materiales
     })
@@ -43,22 +56,41 @@ def material_create(request):
 
 @login_required
 def material_detail(request, material_id):
-    # Traemos el proveedor que tenga el id que seleccionamos
-    material = get_object_or_404(Material, pk=material_id, usuario=request.user)
+    # Traemos el material que tenga el id que seleccionamos
+    material = get_object_or_404(Material, pk=material_id)
     if request.method == 'GET':
-        # Creamos un formulario con los datos del material precargados
-        # Validamos si el usuario es staff para mostrar la información completa
-        if request.user.is_staff:
-            form = MaterialFormForStaff(instance=material)
+        # Validamos si el usuario es compras para permitir aprobar solicitudes
+        if request.user.compras:
+            form = MaterialFormForCompras(instance=material)
         else:
-            form = MaterialDetailForm(instance=material)
+            # Validamos si el usuario es finanzas para permitir aprobar solicitudes
+            if request.user.finanzas:
+                form = MaterialFormForFinanzas(instance=material)
+            else:
+                # Validamos si el usuario es sistemas para permitir aprobar solicitudes
+                if request.user.sistemas:
+                    form = MaterialFormForSistemas(instance=material)
+                else:
+                    form = MaterialDetailForm(instance=material)
         return render(request, 'material/material_detail.html', {
             'material': material,
             'form': form
         })
     else:
         try:
-            form = MaterialDetailForm(request.POST, instance=material)
+            # Validamos si el usuario es compras para permitir aprobar solicitudes
+            if request.user.compras:
+                form = MaterialFormForCompras(request.POST, instance=material)
+            else:
+                # Validamos si el usuario es finanzas para permitir aprobar solicitudes
+                if request.user.finanzas:
+                    form = MaterialFormForFinanzas(request.POST, instance=material)
+                else:
+                    # Validamos si el usuario es sistemas para permitir aprobar solicitudes
+                    if request.user.sistemas:
+                        form = MaterialFormForSistemas(request.POST, instance=material)
+                    else:
+                        form = MaterialDetailForm(request.POST, instance=material)
             form.save()
             return redirect('material')
         except ValueError:
